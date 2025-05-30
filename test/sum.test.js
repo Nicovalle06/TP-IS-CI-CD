@@ -5,7 +5,7 @@ const app = require('../server'); // Ajusta la ruta si necesario
 
 describe('Función suma', () => {
   it('debería sumar dos números', () => {
-    assert.strictEqual(suma(2, 6), 5);
+    assert.strictEqual(suma(2, 3), 5);
   });
 });
 
