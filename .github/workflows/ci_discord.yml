@@ -9,9 +9,6 @@ on:
 jobs:
   test-node:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
     steps:
       - name: Clonar repositorio
         uses: actions/checkout@v3
