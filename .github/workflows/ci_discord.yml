@@ -13,30 +13,24 @@ jobs:
       run:
         working-directory: backend
     steps:
-      - uses: actions/checkout@v3
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
       - name: Instalar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '18'
+
       - name: Instalar dependencias
         run: npm install
-      - name: Ejecutar pruebas
-        run: npm test
 
-  run-python:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: scripts
-    steps:
-      - uses: actions/checkout@v3
-      - name: Ejecutar script Python
-        run: python main.py
+      - name: Ejecutar tests
+        run: npm test
 
   notify-discord-success:
     runs-on: ubuntu-latest
     if: ${{ success() }}
-    needs: [test-node, run-python]
+    needs: [test-node]
     steps:
       - name: Notificar éxito a Discord
         env:
@@ -50,7 +44,7 @@ jobs:
   notify-discord-failure:
     runs-on: ubuntu-latest
     if: ${{ failure() }}
-    needs: [test-node, run-python]
+    needs: [test-node]
     steps:
       - name: Notificar error a Discord
         env:
