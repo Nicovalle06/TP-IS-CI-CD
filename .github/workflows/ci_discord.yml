@@ -33,12 +33,30 @@ jobs:
       - name: Ejecutar script Python
         run: python main.py
 
-  notify-discord:
+  notify-discord-success:
     runs-on: ubuntu-latest
+    if: ${{ success() }}
     needs: [test-node, run-python]
     steps:
-      - name: Notificación a Discord
+      - name: Notificar éxito a Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          curl -H "Content-Type: application/json"             -X POST             -d '{"content":"✅ CI completado correctamente en *${{ github.repository }}* para el commit `${{ github.sha }}`."}'             $DISCORD_WEBHOOK
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{"content":"✅ *CI EXITOSO* en `${{ github.repository }}` para el commit `${{ github.sha }}` por `${{ github.actor }}`."}' \
+            $DISCORD_WEBHOOK
+
+  notify-discord-failure:
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    needs: [test-node, run-python]
+    steps:
+      - name: Notificar error a Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{"content":"❌ *CI FALLÓ* en `${{ github.repository }}` para el commit `${{ github.sha }}` por `${{ github.actor }}`. Revisa los logs en: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }' \
+            $DISCORD_WEBHOOK
