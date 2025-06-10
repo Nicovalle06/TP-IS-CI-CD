@@ -1,4 +1,4 @@
-name: CI con Notificación Discord
+name: CI + Deploy a GitHub Pages + Discord
 
 on:
   push:
@@ -7,8 +7,10 @@ on:
     branches: [main]
 
 jobs:
-  test-node:
+  test-and-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Necesario para publicar en Pages
     steps:
       - name: Clonar repositorio
         uses: actions/checkout@v3
@@ -24,10 +26,19 @@ jobs:
       - name: Ejecutar tests
         run: npm test
 
+      - name: Build del sitio
+        run: npm run build
+
+      - name: Publicar en GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: release          # rama donde se publica
+          folder: public           # carpeta generada con el sitio (cámbiala si usás otra)
+
   notify-discord-success:
     runs-on: ubuntu-latest
     if: ${{ success() }}
-    needs: [test-node]
+    needs: [test-and-build]
     steps:
       - name: Notificar éxito a Discord
         env:
@@ -35,13 +46,13 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
             -X POST \
-            -d '{"content":"✅ *CI EXITOSO* en `${{ github.repository }}` para el commit `${{ github.sha }}` por `${{ github.actor }}`."}' \
+            -d '{"content":"✅ *CI + Deploy EXITOSO* en `${{ github.repository }}` para `${{ github.sha }}` por `${{ github.actor }}`."}' \
             $DISCORD_WEBHOOK
 
   notify-discord-failure:
     runs-on: ubuntu-latest
     if: ${{ failure() }}
-    needs: [test-node]
+    needs: [test-and-build]
     steps:
       - name: Notificar error a Discord
         env:
@@ -49,5 +60,64 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
             -X POST \
-            -d '{"content":"❌ *CI FALLÓ* en `${{ github.repository }}` para el commit `${{ github.sha }}` por `${{ github.actor }}`. Revisa los logs en: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }' \
+            -d '{"content":"❌ *CI + Deploy FALLÓ* en `${{ github.repository }}` para `${{ github.sha }}` por `${{ github.actor }}`.\n🔍 Ver errores: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }' \
             $DISCORD_WEBHOOK
+
+
+
+
+
+
+# name: CI con Notificación Discord
+
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
+
+# jobs:
+#   test-node:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Clonar repositorio
+#         uses: actions/checkout@v3
+
+#       - name: Instalar Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18'
+
+#       - name: Instalar dependencias
+#         run: npm install
+
+#       - name: Ejecutar tests
+#         run: npm test
+
+#   notify-discord-success:
+#     runs-on: ubuntu-latest
+#     if: ${{ success() }}
+#     needs: [test-node]
+#     steps:
+#       - name: Notificar éxito a Discord
+#         env:
+#           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+#         run: |
+#           curl -H "Content-Type: application/json" \
+#             -X POST \
+#             -d '{"content":"✅ *CI EXITOSO* en `${{ github.repository }}` para el commit `${{ github.sha }}` por `${{ github.actor }}`."}' \
+#             $DISCORD_WEBHOOK
+
+#   notify-discord-failure:
+#     runs-on: ubuntu-latest
+#     if: ${{ failure() }}
+#     needs: [test-node]
+#     steps:
+#       - name: Notificar error a Discord
+#         env:
+#           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+#         run: |
+#           curl -H "Content-Type: application/json" \
+#             -X POST \
+#             -d '{"content":"❌ *CI FALLÓ* en `${{ github.repository }}` para el commit `${{ github.sha }}` por `${{ github.actor }}`. Revisa los logs en: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }' \
+#             $DISCORD_WEBHOOK
