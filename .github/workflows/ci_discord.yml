@@ -33,7 +33,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: release          # rama donde se publica
-          folder: public           # carpeta generada con el sitio (cámbiala si usás otra)
+          folder: docs             # carpeta generada con el sitio (cámbiala si usás otra)
 
   notify-discord-success:
     runs-on: ubuntu-latest
