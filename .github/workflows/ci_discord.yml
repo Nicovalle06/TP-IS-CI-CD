@@ -2,7 +2,7 @@ name: CI + Deploy a GitHub Pages + Discord
 
 on:
   push:
-    branches: [release]  # ahora se despliega desde main
+    branches: [main]  # ahora se despliega desde main
   pull_request:
     branches: [main]
 
@@ -27,7 +27,7 @@ jobs:
         run: npm test
 
       - name: Publicar en GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: release         # rama de publicación estándar
           folder: public           # carpeta donde está tu index.html
