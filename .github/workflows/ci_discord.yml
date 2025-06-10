@@ -23,9 +23,6 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
-      - name: Build project
-        run: npm run build  # O si no tienes build, puedes saltarte este paso
-
       - name: Ejecutar tests
         run: npm test
 
