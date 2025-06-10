@@ -26,9 +26,6 @@ jobs:
       - name: Ejecutar tests
         run: npm test
 
-      - name: Build del sitio
-        run: npm run build
-
       - name: Publicar en GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
