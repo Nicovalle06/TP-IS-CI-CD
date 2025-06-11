@@ -11,7 +11,7 @@ function suma(a, b) {
 
 describe('Función suma', () => {
   it('debería sumar dos números', () => {
-    assert.strictEqual(suma(2, 6), 5); //Test fallo
+    assert.strictEqual(suma(2, 3), 5); //Test éxito
   });
 });
 
