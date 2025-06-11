@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "jest",
-    "build": "echo 'No se requiere un paso de construcción complejo para esta aplicación estática.' && mkdir -p public && cp index.html public/index.html"
+    "build": "echo 'Los archivos estáticos ya están en la carpeta public. No se requiere un paso de construcción adicional.'"
   },
   "dependencies": {
     "express": "^4.18.2"
