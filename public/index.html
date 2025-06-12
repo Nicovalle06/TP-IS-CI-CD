@@ -90,6 +90,26 @@
     const form = document.getElementById('formulario');
     const resultadoEl = document.getElementById('resultado');
 
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const num1 = document.getElementById('num1').value;
+      const num2 = document.getElementById('num2').value;
+
+      const res = await fetch('/sumar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ num1, num2 })
+      });
+
+      const data = await res.json();
+      resultadoEl.textContent = `Resultado: ${data.resultado}`;
+    });
+  </script>
+
+  <!-- <script>
+    const form = document.getElementById('formulario');
+    const resultadoEl = document.getElementById('resultado');
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const num1 = parseFloat(document.getElementById('num1').value);
@@ -105,6 +125,6 @@
       resultadoEl.textContent = `Resultado: ${resultado}`;
       resultadoEl.style.color = '#28a745';
     });
-  </script>
+  </script> -->
 </body>
 </html>
