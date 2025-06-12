@@ -46,7 +46,7 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
             -X POST \
-            -d '{"content":"✅ *CI + Deploy EXITOSO* en `${{ github.repository }}` para `${{ github.sha }}` por `${{ github.actor }}`."}' \
+            -d '{"content":"✅ *CI + Deploy EXITOSO* en `${{ github.repository }}` por `${{ github.actor }}`."}' \
             $DISCORD_WEBHOOK
 
   notify-discord-failure:
@@ -60,5 +60,5 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
             -X POST \
-            -d '{"content":"❌ *CI + Deploy FALLÓ* en `${{ github.repository }}` para `${{ github.sha }}` por `${{ github.actor }}`.\n🔍 Ver errores: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }' \
+            -d '{"content":"❌ *CI + Deploy FALLÓ* en `${{ github.repository }}` por `${{ github.actor }}`.\n🔍 Ver errores: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }' \
             $DISCORD_WEBHOOK
