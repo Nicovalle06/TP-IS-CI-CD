@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "jest",
-    "build": "echo 'Los archivos estáticos ya están en la carpeta public. No se requiere un paso de construcción adicional.'"
+    "build": "mkdir -p build && cp -r src/* build/"
   },
   "dependencies": {
     "express": "^4.18.2"
