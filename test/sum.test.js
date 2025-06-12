@@ -1,6 +1,6 @@
 const request = require('supertest');
 const express = require('express');
-const app = require('../server'); // Ajusta la ruta si necesario
+const app = require('./public/server'); // Ajusta la ruta si necesario
 const assert = require('assert'); // Usa assert de Node.js
 
 
